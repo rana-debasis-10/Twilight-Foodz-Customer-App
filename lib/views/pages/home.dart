@@ -1,113 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final String jwt;
+
+  const Home({super.key, required this.jwt});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController controller = TextEditingController();
-  bool? isChecked = false;
-  bool isOn = true;
-  double sliderValue = 0.0;
-  int? selectedInt = 15;
+  String? customerName;
+
+  @override
+  void initState() {
+    Map<String, dynamic> jwt = JwtDecoder.decode(widget.jwt);
+    customerName = jwt["sub"];
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(border: OutlineInputBorder()),
-                onEditingComplete: () {
-                  setState(() {});
-                },
+            Text("The  Cusotmer name is : $customerName"),
+            Text(
+              "This is The Home Page",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 40,
+                fontStyle: FontStyle.italic,
               ),
-            ),
-            Text(controller.text),
-            Checkbox.adaptive(
-              shape: CircleBorder(eccentricity: 0.5),
-              value: isChecked,
-              onChanged: (value) {
-                setState(() {
-                  isChecked = value;
-                });
-              },
-            ),
-            SwitchListTile.adaptive(
-              title: Text("This Is a Switch"),
-              value: isOn,
-              onChanged: (value) => setState(() {
-                isOn = value;
-              }),
-            ),
-            Slider.adaptive(
-              value: sliderValue,
-              onChanged: (value) => setState(() {
-                sliderValue = value;
-              }),
-              max: 100,
-              min: 0,
-              divisions: 4,
-            ),
-            Image.asset("assets/download.jpeg"),
-            SizedBox(height: 10, width: 10),
-            Image.asset("assets/download.jpeg"),
-            SizedBox(height: 10, width: 10),
-
-            Image.asset("assets/download.jpeg"),
-            SizedBox(height: 10, width: 10),
-
-            Image.asset("assets/download.jpeg"),
-            SizedBox(height: 10, width: 10),
-
-            Image.asset("assets/download.jpeg"),
-            SizedBox(height: 10, width: 10),
-
-            ElevatedButton(onPressed: () => {}, child: Text("CLick Me")),
-            FilledButton(onPressed: () => {}, child: Text("CLick Me")),
-            OutlinedButton(onPressed: () => {}, child: Text("CLick Me")),
-            TextButton(onPressed: () => {}, child: Text("CLick Me")),
-            CloseButton(),
-            BackButton(),
-            DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  value: 10,
-                  child: Text("This is Element no 1"),
-                ),
-                DropdownMenuItem(
-                  value: 11,
-                  child: Text("This is Element no 2"),
-                ),
-                DropdownMenuItem(
-                  value: 13,
-                  child: Text("This is Element no 3"),
-                ),
-                DropdownMenuItem(
-                  value: 14,
-                  child: Text("This is Element no 4"),
-                ),
-                DropdownMenuItem(
-                  value: 15,
-                  child: Text("This is Element no 5"),
-                ),
-                DropdownMenuItem(
-                  value: 16,
-                  child: Text("This is Element no 6"),
-                ),
-              ],
-              value: selectedInt,
-              onChanged: (value) {
-                setState(() {
-                  selectedInt = value;
-                });
-              },
             ),
           ],
         ),
